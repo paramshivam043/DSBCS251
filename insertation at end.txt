@@ -1,0 +1,69 @@
+#include <stdio.h>
+
+#define MAX 10
+
+int data[MAX];
+int next[MAX];
+int head = -1;
+int freeIndex = 0;
+
+void insertEnd(int value)
+{
+    // Check if array is full
+    if (freeIndex == MAX)
+    {
+        printf("List is full!\n");
+        return;
+    }
+
+    // Create new node
+    int newIndex = freeIndex;
+
+    data[newIndex] = value;
+    next[newIndex] = -1;
+
+    // If list is empty
+    if (head == -1)
+    {
+        head = newIndex;
+    }
+    else
+    {
+        // Traverse to last node
+        int temp = head;
+
+        while (next[temp] != -1)
+        {
+            temp = next[temp];
+        }
+
+        // Link last node to new node
+        next[temp] = newIndex;
+    }
+
+    freeIndex++;
+}
+
+void display()
+{
+    int temp = head;
+
+    while (temp != -1)
+    {
+        printf("%d -> ", data[temp]);
+        temp = next[temp];
+    }
+
+    printf("NULL\n");
+}
+
+int main()
+{
+    insertEnd(10);
+    insertEnd(20);
+    insertEnd(30);
+
+    display();
+
+    return 0;
+}
