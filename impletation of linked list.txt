@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+void insertBeginning(int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+}
+
+void insertEnd(int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    struct Node *temp;
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    temp = head;
+
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+}
+
+void deleteNode(int value) {
+    struct Node *temp = head;
+    struct Node *prev = NULL;
+
+
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+ 
+    if (head->data == value) {
+        head = head->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Value not found.\n");
+        return;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+void display() {
+    struct Node *temp = head;
+
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    printf("Linked List: ");
+
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+// Free all allocated memory
+void freeList() {
+    struct Node *temp;
+
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+int main() {
+    insertBeginning(20);
+    insertBeginning(10);
+    insertEnd(30);
+    insertEnd(40);
+
+    display();
+
+    deleteNode(30);
+
+    printf("After deleting 30:\n");
+    display();
+
+    freeList();
+
+    return 0;
+}
