@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node* deleteBeginning(struct Node *head) {
+    struct Node *temp;
+
+    if (head == NULL)
+        return NULL;
+
+    temp = head;
+    head = head->next;
+    free(temp);
+
+    return head;
+}
+
+struct Node* deleteEnd(struct Node *head) {
+    struct Node *temp;
+
+    if (head == NULL)
+        return NULL;
+
+    if (head->next == NULL) {
+        free(head);
+        return NULL;
+    }
+
+    temp = head;
+
+    while (temp->next->next != NULL)
+        temp = temp->next;
+
+    free(temp->next);
+    temp->next = NULL;
+
+    return head;
+}
+
+struct Node* deletePosition(struct Node *head, int position) {
+    struct Node *temp, *deleteNode;
+    int i;
+
+    if (head == NULL)
+        return NULL;
+
+    if (position == 1)
+        return deleteBeginning(head);
+
+    temp = head;
+
+    for (i = 1; i < position - 1 && temp->next != NULL; i++)
+        temp = temp->next;
+
+    if (temp->next == NULL)
+        return head;
+
+    deleteNode = temp->next;
+    temp->next = deleteNode->next;
+    free(deleteNode);
+
+    return head;
+}
+
+void display(struct Node *head) {
+    struct Node *temp = head;
+
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node *head = NULL;
+    struct Node *newNode;
+    int position;
+
+    newNode = malloc(sizeof(struct Node));
+    newNode->data = 10;
+    newNode->next = head;
+    head = newNode;
+
+    newNode = malloc(sizeof(struct Node));
+    newNode->data = 20;
+    newNode->next = head;
+    head = newNode;
+
+    newNode = malloc(sizeof(struct Node));
+    newNode->data = 30;
+    newNode->next = NULL;
+
+    struct Node *temp = head;
+
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+
+    display(head);
+
+    head = deleteBeginning(head);
+    display(head);
+
+    head = deleteEnd(head);
+    display(head);
+
+    printf("Enter position: ");
+    scanf("%d", &position);
+
+    head = deletePosition(head, position);
+    display(head);
+
+    return 0;
+}
