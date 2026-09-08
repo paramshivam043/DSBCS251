@@ -1,0 +1,35 @@
+void deleteEnd()
+{
+    int temp;
+
+    // Check if list is empty
+    if (head == -1)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+
+    // If there is only one node
+    if (next[head] == -1)
+    {
+        printf("Deleted element: %d\n", data[head]);
+        head = -1;
+        return;
+    }
+
+    // Find the second-last node
+    temp = head;
+
+    while (next[next[temp]] != -1)
+    {
+        temp = next[temp];
+    }
+
+    // temp is the second-last node
+    int last = next[temp];
+
+    printf("Deleted element: %d\n", data[last]);
+
+    // Make second-last node the last node
+    next[temp] = -1;
+}
