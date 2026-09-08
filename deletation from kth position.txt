@@ -1,0 +1,117 @@
+#include <stdio.h>
+
+#define MAX 10
+
+int data[MAX];
+int next[MAX];
+int head = -1;
+int freeIndex = 0;
+
+void insertEnd(int value)
+{
+    int newIndex = freeIndex;
+
+    data[newIndex] = value;
+    next[newIndex] = -1;
+
+    if (head == -1)
+    {
+        head = newIndex;
+    }
+    else
+    {
+        int temp = head;
+
+        while (next[temp] != -1)
+            temp = next[temp];
+
+        next[temp] = newIndex;
+    }
+
+    freeIndex++;
+}
+
+void deleteKth(int k)
+{
+    int temp, prev, i;
+
+    if (head == -1)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+
+    if (k <= 0)
+    {
+        printf("Invalid position!\n");
+        return;
+    }
+
+    // Delete first node
+    if (k == 1)
+    {
+        temp = head;
+        head = next[head];
+
+        printf("Deleted element: %d\n", data[temp]);
+        return;
+    }
+
+    // Find previous node
+    prev = head;
+
+    for (i = 1; i < k - 1; i++)
+    {
+        if (prev == -1)
+        {
+            printf("Position does not exist!\n");
+            return;
+        }
+
+        prev = next[prev];
+    }
+
+    // Check position
+    if (prev == -1 || next[prev] == -1)
+    {
+        printf("Position does not exist!\n");
+        return;
+    }
+
+    // Delete kth node
+    temp = next[prev];
+    next[prev] = next[temp];
+
+    printf("Deleted element: %d\n", data[temp]);
+}
+
+void display()
+{
+    int temp = head;
+
+    while (temp != -1)
+    {
+        printf("%d -> ", data[temp]);
+        temp = next[temp];
+    }
+
+    printf("NULL\n");
+}
+
+int main()
+{
+    insertEnd(10);
+    insertEnd(20);
+    insertEnd(30);
+    insertEnd(40);
+
+    printf("Before deletion:\n");
+    display();
+
+    deleteKth(3);
+
+    printf("After deletion:\n");
+    display();
+
+    return 0;
+}
