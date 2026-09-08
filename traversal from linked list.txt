@@ -1,0 +1,66 @@
+#include <stdio.h>
+
+#define MAX 10
+
+int data[MAX];
+int next[MAX];
+int head = -1;
+int freeIndex = 0;
+
+void insertEnd(int value)
+{
+    int newIndex = freeIndex;
+
+    data[newIndex] = value;
+    next[newIndex] = -1;
+
+    if (head == -1)
+    {
+        head = newIndex;
+    }
+    else
+    {
+        int temp = head;
+
+        while (next[temp] != -1)
+        {
+            temp = next[temp];
+        }
+
+        next[temp] = newIndex;
+    }
+
+    freeIndex++;
+}
+
+void traversal()
+{
+    int temp = head;
+
+    if (head == -1)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+
+    while (temp != -1)
+    {
+        printf("%d -> ", data[temp]);
+        temp = next[temp];
+    }
+
+    printf("NULL\n");
+}
+
+int main()
+{
+    insertEnd(10);
+    insertEnd(20);
+    insertEnd(30);
+    insertEnd(40);
+
+    printf("Linked List: ");
+    traversal();
+
+    return 0;
+}
